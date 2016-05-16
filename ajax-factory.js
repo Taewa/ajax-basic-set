@@ -1,4 +1,5 @@
 //Requirement : spin < https://github.com/fgnass/spin.js > 
+//Requirement : bootstrap-notify < https://github.com/mouse0270/bootstrap-growl > 
 //Author : Taehwa KIM
 
 var AjaxCall = {
@@ -45,6 +46,8 @@ var AjaxCall = {
 	/* GET
 	========================================================================== */
 	getData : function(url, callback){
+		var self = this;
+
 		$.ajax({
 			type: 'GET',
 			dataType: "json",
@@ -55,7 +58,8 @@ var AjaxCall = {
 			},
 			error: function (e) {
 				console.log('err : ' + e.message + ', url : ' + url);
-			}
+				self.ajaxFailAction();
+			},
 		});
 	},
 
@@ -64,6 +68,8 @@ var AjaxCall = {
 	/* POST
 	========================================================================== */
 	postData : function(url, data, callback){
+		var self = this;
+
 		$.ajax({
 			type: 'POST',
 			data: data,
@@ -73,6 +79,7 @@ var AjaxCall = {
 			},
 			error: function (e) {
 				console.log('err : ' + e.message + ', url : ' + url);
+				self.ajaxFailAction();
 			}
 		});
 	},
@@ -100,6 +107,19 @@ var AjaxCall = {
 			}    
 		});
 	},	//End ajaxLoading
+
+
+	ajaxFailAction : function(){
+		if(typeof Alert == "undefined"){console.log('no $.notify'); return;} 	//No spin
+		
+		Alert.show({
+			icon: 'ion-sad-outline',
+			"message" : "Oh non...! Il y a une erreur :("
+		},{
+			type: 'danger',
+			delay: 6000,
+		});
+	}
 }	//End AjaxCall
 
 
