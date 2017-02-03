@@ -56,9 +56,8 @@ var AjaxCall = {
 			success: function (res) {
 				callback(res);
 			},
-			error: function (e) {
-				console.log('err : ' + e.message + ', url : ' + url);
-				self.ajaxFailAction();
+			error: function (res) {
+				self.ajaxFailAction(res.responseJSON, url);
 			},
 		});
 	},
@@ -77,9 +76,8 @@ var AjaxCall = {
 			success: function (res) {
 				callback(res);
 			},
-			error: function (e) {
-				console.log('err : ' + e.message + ', url : ' + url);
-				self.ajaxFailAction();
+			error: function (res) {
+				self.ajaxFailAction(res, url);
 			}
 		});
 	},
@@ -109,15 +107,23 @@ var AjaxCall = {
 	},	//End ajaxLoading
 
 
-	ajaxFailAction : function(){
+	ajaxFailAction : function(res, url){
+		console.log('err : ' + res.msg + ', url : ' + url);
+		
 		if(typeof Alert == "undefined"){console.log('no $.notify'); return;} 	//No spin
+		
+		var msg = res.msg? '<span class="msg-error">' + res.msg + '</span>' : 'Error';
+		var info = res.info? '<p class="info-error">Raison : ' + res.info + '</p>' : '';
+
+		var alertMsg = msg + info;
+
 		
 		Alert.show({
 			icon: 'ion-sad-outline',
-			"message" : "Oh non...! Il y a une erreur :("
+			"message" : alertMsg
 		},{
 			type: 'danger',
-			delay: 6000,
+			delay: 8000,
 		});
 	}
 }	//End AjaxCall
