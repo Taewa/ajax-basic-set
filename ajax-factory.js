@@ -77,7 +77,7 @@ var AjaxCall = {
 				callback(res);
 			},
 			error: function (res) {
-				self.ajaxFailAction(res, url);
+				self.ajaxFailAction(res.responseJSON, url);
 			}
 		});
 	},
